@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
+export type Papel = 'solicitante' | 'gestor' | 'auditor';
+
 export type Usuario = {
   id: number;
   nome: string;
   email: string;
-  senha: string;
-  papel: 'solicitante' | 'gestor';
+  senhaHash: string;
+  papel: Papel;
   ativo: boolean;
 };
+
+export type UsuarioAutenticado = Omit<Usuario, 'senhaHash'>;
 
 @Injectable()
 export class UsuariosService {
@@ -16,8 +20,18 @@ export class UsuariosService {
       id: 1,
       nome: 'Ana Lima',
       email: 'ana@empresa.com',
-      senha: '123456',
+      senhaHash:
+        '$2b$12$5S9LDbR3FznMAsZY5P..2OKE932dOHeVvGrmlfklgquClbkKgUidC',
       papel: 'gestor',
+      ativo: true,
+    },
+    {
+      id: 2,
+      nome: 'Bruno Silva',
+      email: 'bruno@empresa.com',
+      senhaHash:
+        '$2b$12$5S9LDbR3FznMAsZY5P..2OKE932dOHeVvGrmlfklgquClbkKgUidC',
+      papel: 'solicitante',
       ativo: true,
     },
   ];
@@ -26,3 +40,6 @@ export class UsuariosService {
     return this.usuarios.find((usuario) => usuario.email === email);
   }
 }
+
+// https://www.jwt.io/
+// Site para verificar o conteúdo do JWT, decodificar e validar a assinatura.

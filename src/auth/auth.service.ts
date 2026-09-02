@@ -28,10 +28,22 @@ export class AuthService {
   }
 
   login(usuario: UsuarioAutenticado) {
+
+    let nomeDividido = usuario.nome;
+
+    if (usuario.papel === 'auditor') {
+    const partes = usuario.nome.trim().split(/\s+/);
+    nomeDividido = partes[partes.length - 1];
+  } else if (usuario.papel === 'gestor') {
+    const partes = usuario.nome.trim().split(/\s+/);
+    nomeDividido = partes[0]; 
+  }
     const payload = {
       sub: usuario.id,
       email: usuario.email,
       papel: usuario.papel,
+      matricula: usuario.matricula,
+      nome: nomeDividido,
     };
 
     return {

@@ -7,6 +7,8 @@ type JwtPayload = {
   sub: number;
   email: string;
   papel: Papel;
+  matricula: string;
+  nome: string;
 };
 
 @Injectable()
@@ -26,10 +28,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(payload: JwtPayload) {
+
+
+    let matricula = payload.matricula;
+   
+    if (payload.papel === 'auditor') 
+      { 
+   ;
+        matricula = matricula.split('').reverse().join('');
+       }
     return {
       id: payload.sub,
+      nome: payload.nome,
       email: payload.email,
       papel: payload.papel,
+      matricula: matricula,
     };
   }
 }
